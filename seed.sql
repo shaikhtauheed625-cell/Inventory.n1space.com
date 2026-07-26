@@ -1,0 +1,1 @@
+INSERT IGNORE INTO settings (setting_key, setting_value) VALUES ('staff_permissions', '{"can_view_reports": false, "can_delete_sales": false, "can_manage_products": false, "can_manage_stock": true}');

@@ -1,0 +1,162 @@
+/* Tasks Page Styles */
+:root {
+    --bg-dark: #0b1120;
+    --card-bg: rgba(17, 24, 39, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --accent-purple: #8b5cf6;
+    --accent-blue: #00d2ff;
+    --text-muted: #94a3b8;
+}
+
+.task-container {
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.05), transparent),
+                radial-gradient(circle at bottom left, rgba(0, 210, 255, 0.05), transparent);
+    min-height: calc(100vh - 100px);
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+.task-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 210, 255, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.task-card.priority-High { border-left: 4px solid #ef4444; }
+.task-card.priority-Medium { border-left: 4px solid #f59e0b; }
+.task-card.priority-Low { border-left: 4px solid #10b981; }
+
+.task-status-pending { color: #f59e0b; }
+.task-status-completed { color: #10b981; text-decoration: line-through; opacity: 0.6; }
+.task-status-overdue { color: #ef4444; }
+
+.task-category-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+.progress-luxury {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-luxury .progress-bar {
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+/* Sidebar Styling */
+.filter-sidebar {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 100px;
+}
+
+.filter-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 0.5rem;
+}
+
+.filter-link:hover, .filter-link.active {
+    background: rgba(0, 210, 255, 0.1);
+    color: var(--accent-blue);
+}
+
+.filter-link i {
+    width: 20px;
+    margin-right: 10px;
+}
+
+/* Add Task Modal */
+.modal-content {
+    background: #111827;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+}
+
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    color: white;
+}
+
+.form-control:focus, .form-select:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 0.25rem rgba(0, 210, 255, 0.1);
+    color: white;
+}
+
+/* Drag and Drop Ghost */
+.sortable-ghost {
+    opacity: 0.4;
+    background: var(--accent-blue) !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-task {
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Notification Popups */
+#task-notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.notification-toast {
+    background: rgba(17, 24, 39, 0.95);
+    border: 1px solid var(--accent-blue);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    transform: translateX(120%);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.notification-toast.show {
+    transform: translateX(0);
+}
+
+.notification-toast i {
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
