@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/oatgwnis/repositories/inventory-repo
+    - export DEPLOYPATH=/home/oatgwnis/inventory.n1space.com
     - /bin/cp -r . $DEPLOYPATH
