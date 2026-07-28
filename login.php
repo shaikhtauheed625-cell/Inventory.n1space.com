@@ -156,80 +156,43 @@ html, body {
     overflow: hidden;
 }
 
-/* Decorative glowing ring */
-.hero-ring {
-    position: absolute;
-    width: 520px; height: 520px;
-    border-radius: 50%;
-    border: 1px solid rgba(6,182,212,0.12);
-    top: 50%; left: 50%;
-    transform: translate(-40%, -50%);
-    animation: ringPulse 6s ease-in-out infinite;
-    pointer-events: none;
+/* Hero background image — character shows right side of hero panel */
+.hero-image {
+    position: absolute; inset: 0; z-index: 0;
+    background: url('assets/robot_bg.png') 70% center / cover no-repeat;
 }
-.hero-ring::before {
+/* Gradient: dark on left (text readable) → image revealed on right */
+.hero-image::after {
     content: '';
-    position: absolute; inset: 40px;
-    border-radius: 50%;
-    border: 1px solid rgba(6,182,212,0.08);
+    position: absolute; inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(2,6,23,0.97)  0%,
+        rgba(2,6,23,0.90) 28%,
+        rgba(2,6,23,0.60) 52%,
+        rgba(2,6,23,0.20) 72%,
+        rgba(2,6,23,0.05) 100%
+    );
 }
-.hero-ring::after {
+/* Vignette top & bottom */
+.hero-image::before {
     content: '';
-    position: absolute; inset: 100px;
-    border-radius: 50%;
-    border: 1px solid rgba(6,182,212,0.05);
-}
-@keyframes ringPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(6,182,212,0); opacity: 0.6; }
-    50%       { box-shadow: 0 0 60px 10px rgba(6,182,212,0.06); opacity: 1; }
+    position: absolute; inset: 0; z-index: 1;
+    background:
+        linear-gradient(to bottom, rgba(2,6,23,0.6) 0%, transparent 25%),
+        linear-gradient(to top,    rgba(2,6,23,0.6) 0%, transparent 25%);
 }
 
-/* Floating geometry shapes */
-.geo {
-    position: absolute; pointer-events: none;
+/* Subtle cyan scanline over image for cyberpunk feel */
+.hero-scanline {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(6,182,212,0.015) 3px, rgba(6,182,212,0.015) 4px
+    );
+    animation: scanMove 12s linear infinite;
 }
-.geo-1 {
-    width: 80px; height: 80px;
-    top: 18%; right: 22%;
-    border: 1px solid rgba(6,182,212,0.15);
-    border-radius: 12px;
-    transform: rotate(20deg);
-    animation: geoFloat1 8s ease-in-out infinite;
-}
-.geo-2 {
-    width: 40px; height: 40px;
-    bottom: 28%; right: 18%;
-    border: 1px solid rgba(6,182,212,0.1);
-    border-radius: 50%;
-    animation: geoFloat2 10s ease-in-out infinite;
-}
-.geo-3 {
-    width: 120px; height: 2px;
-    top: 35%; right: 12%;
-    background: linear-gradient(90deg, transparent, rgba(6,182,212,0.3), transparent);
-    animation: geoFloat3 7s ease-in-out infinite;
-}
-.geo-4 {
-    width: 6px; height: 6px;
-    top: 28%; right: 30%;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 12px var(--cyan-glow);
-    animation: blink 3s ease-in-out infinite;
-}
-.geo-5 {
-    width: 6px; height: 6px;
-    bottom: 35%; right: 25%;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 12px var(--cyan-glow);
-    animation: blink 3s ease-in-out infinite 1.5s;
-}
-
-@keyframes geoFloat1 { 0%,100%{transform:rotate(20deg) translateY(0)} 50%{transform:rotate(25deg) translateY(-15px)} }
-@keyframes geoFloat2 { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-12px) scale(1.1)} }
-@keyframes geoFloat3 { 0%,100%{opacity:0.3; transform:scaleX(1)} 50%{opacity:0.8; transform:scaleX(1.3)} }
-@keyframes blink     { 0%,100%{opacity:0.5} 50%{opacity:1; box-shadow:0 0 20px var(--cyan-glow)} }
+@keyframes scanMove { to { background-position: 0 100px; } }
 
 /* Hero content */
 .hero-content { position: relative; z-index: 2; max-width: 520px; }
@@ -588,13 +551,8 @@ html, body {
 
     <!-- ── LEFT: Hero ── -->
     <section class="hero" aria-label="Product information">
-        <!-- Decorative elements -->
-        <div class="hero-ring" aria-hidden="true"></div>
-        <div class="geo geo-1" aria-hidden="true"></div>
-        <div class="geo geo-2" aria-hidden="true"></div>
-        <div class="geo geo-3" aria-hidden="true"></div>
-        <div class="geo geo-4" aria-hidden="true"></div>
-        <div class="geo geo-5" aria-hidden="true"></div>
+        <!-- Background image: robot/character on right side -->
+        <div class="hero-image" role="img" aria-label="Futuristic IT asset management illustration" aria-hidden="true"></div>
 
         <div class="hero-content">
             <div class="status-badge" role="status" aria-label="System status: online">
