@@ -64,22 +64,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         /* ── Full-screen background — character visible on left ── */
         .bg {
             position: fixed; inset: 0;
-            background: url('assets/robot_bg.png') center center / cover no-repeat;
+            /* Shift image LEFT so character appears in left 55% of screen */
+            background: url('assets/robot_bg.png') 20% center / cover no-repeat;
             z-index: 0;
         }
 
-        /*  Gradient: transparent left → dark right (card area)
-            Left half: barely any overlay so the character shines through
-            Right half: dark so the glass card is readable             */
+        /* Gradient: left stays clear so character shows, right darkens for card */
         .bg-grad {
             position: fixed; inset: 0; z-index: 1;
             background: linear-gradient(
-                100deg,
-                rgba(2,11,18,0.10)  0%,
-                rgba(2,11,18,0.15) 30%,
-                rgba(2,11,18,0.65) 58%,
-                rgba(2,11,18,0.93) 70%,
-                rgba(2,11,18,0.97) 100%
+                to right,
+                rgba(2,11,18,0.02)  0%,   /* fully transparent — show character */
+                rgba(2,11,18,0.05) 25%,
+                rgba(2,11,18,0.40) 52%,
+                rgba(2,11,18,0.88) 65%,
+                rgba(2,11,18,0.97) 78%,
+                rgba(2,11,18,0.99) 100%
             );
         }
 
@@ -100,11 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         /* ── Page wrapper ── */
         .page {
             position: relative; z-index: 10;
-            width: 100%; height: 100vh;
+            width: 100vw; height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: flex-end;   /* card on right */
-            padding-right: 6vw;
+            justify-content: flex-end;
+            /* Right padding = card width + 4vw so card is fully on screen */
+            padding: 0 4vw;
+            box-sizing: border-box;
         }
 
         /* ── Optional left text block (low opacity so char shows) ── */
@@ -142,11 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         /* ── Login Card ── */
         .login-card {
-            width: 390px;
+            width: min(390px, 90vw);   /* never wider than viewport */
             background: var(--glass);
             border: 1px solid var(--gborder);
             border-radius: 22px;
-            padding: 44px 40px;
+            padding: 40px 36px;
             backdrop-filter: blur(32px);
             -webkit-backdrop-filter: blur(32px);
             box-shadow:
