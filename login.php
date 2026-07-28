@@ -91,9 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </form>
             
-            <div class="text-center small text-muted bg-dark bg-opacity-25 p-2 rounded-3 border border-secondary border-opacity-10">
-                <i class="fas fa-info-circle me-1"></i> Default: <span class="text-light">admin</span> / <span class="text-light">admin123</span>
-            </div>
+
+
         </div>
     </div>
     
