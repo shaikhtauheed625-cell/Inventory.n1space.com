@@ -1,8 +1,18 @@
 <?php
-$host    = getenv('DB_HOST')    ?: '127.0.0.1';
-$db      = getenv('DB_NAME')    ?: 'n1_shopping';
-$user    = getenv('DB_USER')    ?: 'root';
-$pass    = getenv('DB_PASS')    ?: '';
+// Auto-detect environment: live server vs local XAMPP
+if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') === false) {
+    // ── LIVE SERVER (inventory.n1space.com) ──
+    $host = '127.0.0.1';
+    $db   = 'oatgwnis_inventory';
+    $user = 'oatgwnis_inventory';
+    $pass = 'oatgwnis_inventory';
+} else {
+    // ── LOCAL XAMPP ──
+    $host = '127.0.0.1';
+    $db   = 'n1_shopping';
+    $user = 'root';
+    $pass = '';
+}
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

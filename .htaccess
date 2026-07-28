@@ -1,8 +1,0 @@
-# ============================================================
-# LIVE SERVER DATABASE CREDENTIALS
-# Replace the values below with your cPanel MySQL credentials
-# ============================================================
-SetEnv DB_HOST 127.0.0.1
-SetEnv DB_NAME oatgwnis_n1shopping
-SetEnv DB_USER oatgwnis_n1user
-SetEnv DB_PASS YOUR_DB_PASSWORD_HERE
