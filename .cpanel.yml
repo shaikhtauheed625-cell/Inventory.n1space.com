@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/oatgwnis/public_html
+    - export DEPLOYPATH=/home/oatgwnis/inventory.n1space.com
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -r . $DEPLOYPATH
