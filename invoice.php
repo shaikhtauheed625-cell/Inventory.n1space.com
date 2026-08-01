@@ -213,6 +213,25 @@ include 'includes/header.php';
                 </ul>
             </div>
             <?php endif; ?>
+
+            <?php 
+            try {
+                $dbServices = $pdo->query("SELECT title, url FROM services ORDER BY id DESC LIMIT 5")->fetchAll();
+            } catch(Exception $e) { $dbServices = []; }
+            
+            if (!empty($dbServices)):
+            ?>
+            <div class="footer-block">
+                <div class="footer-title">OUR WEBSITES & SERVICES</div>
+                <ul>
+                    <?php 
+                    foreach ($dbServices as $s) {
+                        echo "<li><strong>" . htmlspecialchars($s['title']) . "</strong> - <a href='" . htmlspecialchars($s['url']) . "' target='_blank' style='color:#00d4ff; text-decoration:none;'>" . htmlspecialchars(parse_url($s['url'], PHP_URL_HOST) ?: $s['url']) . "</a></li>";
+                    }
+                    ?>
+                </ul>
+            </div>
+            <?php endif; ?>
             
             <div class="footer-block">
                 <?php if ($sale['type'] === 'Quotation'): ?>

@@ -94,6 +94,11 @@ if (isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
                             <?php if (hasPermission('can_view_tasks')): ?>
                             <li><a class="dropdown-item py-2 <?php echo basename($_SERVER['PHP_SELF']) == 'tasks.php' ? 'text-primary' : ''; ?>" href="tasks.php"><i class="fas fa-tasks me-2 text-secondary"></i>Tasks</a></li>
                             <?php endif; ?>
+                            <li class="nav-item">
+                                <a class="dropdown-item py-2 <?php echo basename($_SERVER['PHP_SELF']) == 'services.php' ? 'text-primary' : ''; ?>" href="services.php">
+                                    <i class="fas fa-concierge-bell me-2 text-warning"></i>Our Services & Portals
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <!-- Global Search Bar -->

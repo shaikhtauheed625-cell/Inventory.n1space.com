@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $stmt->execute(['quotation_terms', $_POST['quotation_terms'] ?? '']);
         $stmt->execute(['invoice_notes', $_POST['invoice_notes'] ?? '']);
         $stmt->execute(['quotation_notes', $_POST['quotation_notes'] ?? '']);
+        $stmt->execute(['our_services', $_POST['our_services'] ?? '']);
         $success = "Settings updated successfully.";
     } catch (Exception $e) {
         $error = "Failed to update settings: " . $e->getMessage();
@@ -142,6 +143,12 @@ include 'includes/header.php';
                 <div class="mb-4">
                     <label class="form-label text-muted small fw-bold uppercase">Invoice Notes</label>
                     <textarea name="invoice_notes" class="form-control" rows="2"><?php echo htmlspecialchars($settings['invoice_notes'] ?? ''); ?></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-bold uppercase"><i class="fas fa-concierge-bell me-1 text-warning"></i> Our Services (Printed on Invoice/Quotation)</label>
+                    <textarea name="our_services" class="form-control" rows="4" placeholder="e.g. IT Consulting&#10;Software Development&#10;Hardware Maintenance&#10;Cloud Solutions"><?php echo htmlspecialchars($settings['our_services'] ?? "IT Asset Management\nDevice Procurement & Maintenance\nSoftware Licensing & Compliance\nCloud & Network Infrastructure"); ?></textarea>
+                    <div class="form-text small">Enter each service on a new line.</div>
                 </div>
 
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Save Settings</button>

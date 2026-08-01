@@ -683,6 +683,10 @@ input:-webkit-autofill:focus {
                 </span>
             </button>
 
+            <div style="text-align: center; font-size: 12.5px; color: rgba(255,255,255,.4); margin-bottom: 16px;">
+                Don't have an account? <a href="register.php" style="color: #00d4ff; font-weight: 600; text-decoration: none;">Create Account</a>
+            </div>
+
             <!-- Divider -->
             <div class="divrow">
                 <div class="divline"></div>
