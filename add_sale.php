@@ -20,13 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($item['id'] === 'manual') {
                     $totalAmount += (float)$item['price'] * (int)$item['qty'];
                 } else {
-                    $pStmt = $pdo->prepare("SELECT price, stock_quantity FROM variations WHERE id = ?");
+                    $pStmt = $pdo->prepare("SELECT stock_quantity FROM variations WHERE id = ?");
                     $pStmt->execute([$item['id']]);
                     $var = $pStmt->fetch();
                     if ($var['stock_quantity'] < $item['qty']) {
                         throw new Exception("Not enough stock for variation ID: " . $item['id']);
                     }
-                    $totalAmount += $var['price'] * $item['qty'];
+                    $unitPrice = isset($item['price']) && $item['price'] !== '' ? (float)$item['price'] : 0;
+                    $totalAmount += $unitPrice * (int)$item['qty'];
                 }
             }
         }
@@ -59,9 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($item['id'] === 'manual') {
                     $iStmt->execute([$saleId, null, $item['name'], $item['variation'], $item['qty'], $item['price']]);
                 } else {
-                    $pStmt = $pdo->prepare("SELECT price FROM variations WHERE id = ?");
-                    $pStmt->execute([$item['id']]);
-                    $price = $pStmt->fetchColumn();
+                    $price = isset($item['price']) && $item['price'] !== '' ? (float)$item['price'] : 0;
+                    if ($price == 0) {
+                        $pStmt = $pdo->prepare("SELECT price FROM variations WHERE id = ?");
+                        $pStmt->execute([$item['id']]);
+                        $price = $pStmt->fetchColumn();
+                    }
                     
                     $iStmt->execute([$saleId, $item['id'], null, null, $item['qty'], $price]);
                     $uStmt->execute([$item['qty'], $item['id']]);
@@ -181,7 +185,7 @@ include 'includes/header.php';
                 <div id="items-container">
                     <div class="item-row mb-3 p-3 border border-secondary border-opacity-10 rounded-3 bg-dark bg-opacity-25">
                         <div class="row g-3 align-items-start">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <label class="form-label small text-muted">Product Variation</label>
                                 <select name="items[0][id]" class="form-select item-select" required>
                                     <option value="">Choose product...</option>
@@ -195,25 +199,25 @@ include 'includes/header.php';
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label small text-muted">Quantity</label>
-                                <input type="number" name="items[0][qty]" class="form-control" value="1" min="1" required>
+                                <label class="form-label small text-muted">Selling Rate (₹)</label>
+                                <input type="number" step="0.01" name="items[0][price]" class="form-control item-price" placeholder="Rate">
                             </div>
-                            <div class="col-md-4 manual-fields d-none">
+                            <div class="col-md-2">
+                                <label class="form-label small text-muted">Quantity</label>
+                                <input type="number" name="items[0][qty]" class="form-control item-qty" value="1" min="1" required>
+                            </div>
+                            <div class="col-md-3 manual-fields d-none">
                                 <div class="row g-2">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label class="form-label small text-muted">Prod Name</label>
                                         <input type="text" name="items[0][name]" class="form-control form-control-sm" placeholder="Name">
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="form-label small text-muted">Price (₹)</label>
-                                        <input type="number" step="0.01" name="items[0][price]" class="form-control form-control-sm manual-price" placeholder="Price">
                                     </div>
                                     <div class="col-12 mt-2">
                                         <input type="text" name="items[0][variation]" class="form-control form-control-sm" placeholder="Variation (Optional)">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-1 text-end">
+                            <div class="col-md-1 text-end pt-4">
                                 <button type="button" class="btn btn-outline-danger w-100 remove-item"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
@@ -249,8 +253,8 @@ addBtn.addEventListener('click', function() {
     const newRow = document.createElement('div');
     newRow.className = 'item-row mb-3 p-3 border border-secondary border-opacity-10 rounded-3 bg-dark bg-opacity-25 animate-fade-in';
     newRow.innerHTML = `
-        <div class="row g-3 align-items-end">
-            <div class="col-md-5">
+        <div class="row g-3 align-items-start">
+            <div class="col-md-4">
                 <label class="form-label small text-muted">Product Variation</label>
                 <select name="items[${itemCount}][id]" class="form-select item-select" required>
                     <option value="">Choose product...</option>
@@ -264,25 +268,25 @@ addBtn.addEventListener('click', function() {
                 </select>
             </div>
             <div class="col-md-2">
-                <label class="form-label small text-muted">Quantity</label>
-                <input type="number" name="items[${itemCount}][qty]" class="form-control" value="1" min="1" required>
+                <label class="form-label small text-muted">Selling Rate (₹)</label>
+                <input type="number" step="0.01" name="items[${itemCount}][price]" class="form-control item-price" placeholder="Rate">
             </div>
-            <div class="col-md-4 manual-fields d-none">
+            <div class="col-md-2">
+                <label class="form-label small text-muted">Quantity</label>
+                <input type="number" name="items[${itemCount}][qty]" class="form-control item-qty" value="1" min="1" required>
+            </div>
+            <div class="col-md-3 manual-fields d-none">
                 <div class="row g-2">
-                    <div class="col-6">
+                    <div class="col-12">
                         <label class="form-label small text-muted">Prod Name</label>
                         <input type="text" name="items[${itemCount}][name]" class="form-control form-control-sm" placeholder="Name">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small text-muted">Price (₹)</label>
-                        <input type="number" step="0.01" name="items[${itemCount}][price]" class="form-control form-control-sm manual-price" placeholder="Price">
                     </div>
                     <div class="col-12 mt-2">
                         <input type="text" name="items[${itemCount}][variation]" class="form-control form-control-sm" placeholder="Variation (Optional)">
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 text-end">
+            <div class="col-md-1 text-end pt-4">
                 <button type="button" class="btn btn-outline-danger w-100 remove-item"><i class="fas fa-trash"></i></button>
             </div>
         </div>
@@ -296,15 +300,19 @@ document.addEventListener('change', function(e) {
     if (e.target.classList.contains('item-select')) {
         const row = e.target.closest('.item-row');
         const manualFields = row.querySelector('.manual-fields');
-        const inputs = manualFields.querySelectorAll('input');
+        const priceInput = row.querySelector('.item-price');
+        const option = e.target.options[e.target.selectedIndex];
         
         if (e.target.value === 'manual') {
             manualFields.classList.remove('d-none');
-            inputs.forEach(i => i.required = true);
-            row.querySelector('[name*="[variation]"]').required = false; // Variation optional
+            manualFields.querySelectorAll('input').forEach(i => i.required = true);
+            row.querySelector('[name*="[variation]"]').required = false;
         } else {
             manualFields.classList.add('d-none');
-            inputs.forEach(i => i.required = false);
+            manualFields.querySelectorAll('input').forEach(i => i.required = false);
+            if (option && option.dataset.price) {
+                priceInput.value = parseFloat(option.dataset.price).toFixed(2);
+            }
         }
         updateTotal();
     }
@@ -332,17 +340,18 @@ function updateTotal() {
     let subtotal = 0;
     document.querySelectorAll('.item-row').forEach(row => {
         const select = row.querySelector('.item-select');
-        const qtyInput = row.querySelector('input[name*="[qty]"]');
-        const manualPrice = row.querySelector('.manual-price');
+        const qtyInput = row.querySelector('.item-qty');
+        const priceInput = row.querySelector('.item-price');
         const option = select.options[select.selectedIndex];
         
-        const qty = parseInt(qtyInput.value || 0);
-        
-        if (select.value === 'manual') {
-            subtotal += (parseFloat(manualPrice.value) || 0) * qty;
-        } else if (option && option.dataset.price) {
-            subtotal += parseFloat(option.dataset.price) * qty;
+        const qty = parseInt(qtyInput ? qtyInput.value : 0) || 0;
+        let price = parseFloat(priceInput ? priceInput.value : 0) || 0;
+
+        if (price === 0 && option && option.dataset.price) {
+            price = parseFloat(option.dataset.price);
         }
+
+        subtotal += price * qty;
     });
     
     const gstRate = parseFloat(document.getElementById('gstRate').value) || 0;

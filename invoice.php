@@ -124,10 +124,9 @@ include 'includes/header.php';
                 <h4>N1 Solution</h4>
                 <p>Sandhurst Road, In front J.J. Hospital Gate No. 9<br>
                 Mumbai, Maharashtra, Pincode 400003</p>
-                <p><i class="fas fa-phone-alt"></i> +91 98765 43210</p>
+                <p><i class="fas fa-phone-alt"></i> +91 96162 73393</p>
                 <p><i class="fas fa-envelope"></i> support@n1shopping.com</p>
                 <p><i class="fas fa-globe"></i> www.n1shopping.com</p>
-                <p class="mt-2 fw-bold">GSTIN: 27ABCDE1234F1Z5</p>
             </div>
             
             <div class="address-block">
